@@ -46,7 +46,5 @@ export function AuthProvider({ children }: IAuthProviderProps) {
 }
 
 export function useSession() {
-  const value = useContext(AuthContext);
-
-  return value;
+  return useContext(AuthContext);
 }
