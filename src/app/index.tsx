@@ -31,7 +31,6 @@ export default function Index() {
   });
 
   useEffect(() => {
-    console.log('Validating on Index.....');
     if (fontsLoaded && !isLoading) {
       if (!session) {
         router.replace('/sign-in');

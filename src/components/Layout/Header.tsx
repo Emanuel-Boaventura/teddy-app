@@ -1,4 +1,5 @@
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { DrawerToggleButton } from '@react-navigation/drawer';
+import { Image, StyleSheet, View } from 'react-native';
 
 export function Header() {
   function handleOpenMenu() {}
@@ -7,12 +8,7 @@ export function Header() {
     <View style={s.view}>
       <Image source={require('@/assets/images/logo.png')} style={s.logo} />
 
-      <Pressable>
-        <Image
-          source={require('@/assets/images/burger.png')}
-          style={s.burger}
-        />
-      </Pressable>
+      <DrawerToggleButton />
     </View>
   );
 }
@@ -21,6 +17,7 @@ const s = StyleSheet.create({
   view: {
     display: 'flex',
     justifyContent: 'space-between',
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
   },
