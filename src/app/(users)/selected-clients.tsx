@@ -4,7 +4,7 @@ import { MyText } from '@/components/ui/MyText';
 import { useClients } from '@/Contexts/ClientsContext';
 import { FlashList } from '@shopify/flash-list';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 export default function SelectedClients() {
   const [isLoading, setIsLoading] = useState(false);
