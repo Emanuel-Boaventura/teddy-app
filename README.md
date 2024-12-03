@@ -13,6 +13,6 @@ Caso prefira abrir em algum emulador depois de inicializar o servidor pode press
 
 ## Testes
 
-Caso queira rodas os testes unitarios e ver se estão passando apenas digite no terminal:
+Caso queira rodas os testes unitários e ver se estão passando apenas digite no terminal:
 
 `npm run test`
