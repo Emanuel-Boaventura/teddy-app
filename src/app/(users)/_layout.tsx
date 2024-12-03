@@ -57,7 +57,11 @@ export default function ClientsLayout() {
             name='clients'
             options={{
               drawerLabel: ({ color, focused }) => (
-                <MyDrawerItem color={color} focused={focused} title='Clients' />
+                <MyDrawerItem
+                  color={color}
+                  focused={focused}
+                  title='Clientes'
+                />
               ),
               drawerIcon: ({ color, focused }) => (
                 <Ionicons
@@ -76,7 +80,7 @@ export default function ClientsLayout() {
                 <MyDrawerItem
                   color={color}
                   focused={focused}
-                  title='Produtos'
+                  title='Clientes Selecionados'
                 />
               ),
               drawerIcon: ({ color, focused }) => (
