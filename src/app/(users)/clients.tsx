@@ -54,6 +54,10 @@ export default function Home() {
     void getData();
   }, [limit, page]);
 
+  useEffect(() => {
+    paginationControl.setPage(1);
+  }, [limit]);
+
   return (
     <View style={s.view}>
       <View style={s.quantityView}>
@@ -90,12 +94,7 @@ export default function Home() {
 
       <View style={s.footer}>
         <Pressable
-          style={({ pressed }) => [
-            s.createButton,
-            {
-              backgroundColor: pressed ? '#fdf0e9' : 'transparent',
-            },
-          ]}
+          style={({ pressed }) => [s.createButton, pressed && s.pressedButton]}
           onPress={() => handleOpenSheet()}
         >
           <MyText color='#EC6724' weight='700'>
@@ -151,5 +150,8 @@ const s = StyleSheet.create({
     borderColor: '#EC6724',
     height: 40,
     borderWidth: 2,
+  },
+  pressedButton: {
+    backgroundColor: '#fdf0e9',
   },
 });
