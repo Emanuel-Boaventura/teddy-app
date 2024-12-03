@@ -42,7 +42,7 @@ type SheetProps = {
   refreshData: () => Promise<void>;
 };
 
-export const AddClientBottomSheet = forwardRef<BottomSheet, SheetProps>(
+export const ClientBottomSheet = forwardRef<BottomSheet, SheetProps>(
   ({ userId, setUserId, refreshData }, ref) => {
     const [isLoading, setIsLoading] = useState(false);
     const { handleSubmit, control, watch, setValue } = useForm<TUserSchema>({

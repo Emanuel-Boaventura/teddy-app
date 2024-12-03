@@ -1,4 +1,4 @@
-import { AddClientBottomSheet } from '@/components/Clients/AddClientBottomSheet';
+import { ClientBottomSheet } from '@/components/Clients/ClientBottomSheet';
 import { ClientCard } from '@/components/Clients/ClientCard';
 import { ItemsPerPageMenu } from '@/components/Clients/ItemsPerPageMenu';
 import { Loader } from '@/components/ui/Loader';
@@ -101,7 +101,7 @@ export default function Home() {
         <Pagination pagination={paginationControl} />
       </View>
 
-      <AddClientBottomSheet
+      <ClientBottomSheet
         ref={bottomSheetRef}
         userId={selectedId}
         setUserId={setSelectedId}
