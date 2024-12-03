@@ -1,25 +1,12 @@
 import { MyDrawerItem } from '@/components/Layout/Drawer/DrawerItem';
 import { MyDrawer } from '@/components/Layout/Drawer/MyDrawer';
 import { Header } from '@/components/Layout/Header';
-import { Loader } from '@/components/ui/Loader';
-import { useSession } from '@/Contexts/AuthContext';
 import { ClientsProvider } from '@/Contexts/ClientsContext';
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function ClientsLayout() {
-  const { user, isLoading } = useSession();
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (!user) {
-    router.replace('/sign-in');
-  }
-
   return (
     <ClientsProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>

@@ -1,28 +1,46 @@
 import { MyText } from '@/components/ui/MyText';
-import { useSession } from '@/Contexts/AuthContext';
 import { handleError } from '@/utils/handleError';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 
+interface IUser {
+  name: string;
+}
+
 export default function SignIn() {
   const [name, setName] = useState('');
 
-  const { user, storeData } = useSession();
+  async function getUserName() {
+    try {
+      const userData = await AsyncStorage.getItem('userData');
 
-  useEffect(() => {
-    if (user) setName(user.name);
-  }, []);
+      if (userData !== null) {
+        const user = JSON.parse(userData) as IUser;
+
+        setName(user.name);
+      }
+    } catch (error) {
+      handleError(error);
+    }
+  }
 
   async function signIn() {
     try {
-      storeData({ name });
+      const userData = JSON.stringify({ name });
+
+      await AsyncStorage.setItem('userData', userData);
 
       router.navigate({ pathname: '/clients' });
     } catch (error) {
       handleError(error);
     }
   }
+
+  useEffect(() => {
+    if (!name) getUserName();
+  }, []);
 
   return (
     <View style={s.view}>
@@ -34,6 +52,7 @@ export default function SignIn() {
         placeholder='Digite o seu nome:'
         value={name}
         onChangeText={setName}
+        onSubmitEditing={signIn}
       />
 
       <Pressable

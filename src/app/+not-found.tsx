@@ -11,7 +11,7 @@ export default function NotFoundScreen() {
           Não encontramos a página que você estava procurando.
         </MyText>
 
-        <Link href='/home' style={s.link}>
+        <Link href='/clients' style={s.link}>
           <MyText style={s.text}>Voltar para a Home.</MyText>
         </Link>
       </View>
