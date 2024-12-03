@@ -1,16 +1,20 @@
 import { useSession } from '@/Contexts/AuthContext';
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function SignIn() {
   const [name, setName] = useState('');
 
-  const { signIn } = useSession();
+  const { user, storeData } = useSession();
 
-  async function validate() {
+  useEffect(() => {
+    if (user) setName(user.name);
+  }, []);
+
+  async function signIn() {
     try {
-      signIn(name);
+      storeData({ name });
 
       router.navigate({ pathname: '/home' });
     } catch (error) {
@@ -37,7 +41,7 @@ export default function SignIn() {
           },
           s.button,
         ]}
-        onPress={validate}
+        onPress={signIn}
       >
         <Text style={s.buttonText}>Entrar</Text>
       </Pressable>

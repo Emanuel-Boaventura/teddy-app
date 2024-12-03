@@ -14,20 +14,20 @@ export const unstable_settings = {
 };
 
 export default function ClientsLayout() {
-  const { session, isLoading } = useSession();
+  const { user, isLoading } = useSession();
 
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading) {
     return <ActivityIndicator color='#EC6724' size='large' />;
   }
 
-  if (!session) {
+  if (!user) {
     router.replace('/sign-in');
   }
 
   return (
     <ClientsProvider>
-      <GestureHandlerRootView>
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <Drawer
           screenOptions={{
             headerTitle: () => <Header />,

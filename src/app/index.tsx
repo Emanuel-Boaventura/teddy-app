@@ -16,8 +16,6 @@ import { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
 export default function Index() {
-  const { session, isLoading } = useSession();
-
   let [fontsLoaded] = useFonts({
     '100': Inter_100Thin,
     '200': Inter_200ExtraLight,
@@ -31,14 +29,8 @@ export default function Index() {
   });
 
   useEffect(() => {
-    if (fontsLoaded && !isLoading) {
-      if (!session) {
-        router.replace('/sign-in');
-      } else {
-        router.replace('/home');
-      }
-    }
-  }, [session, isLoading, fontsLoaded]);
+    if (fontsLoaded) router.replace('/sign-in');
+  }, [fontsLoaded]);
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

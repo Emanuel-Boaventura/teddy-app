@@ -1,42 +1,64 @@
-import { useStorageState } from '@/hooks/useStorageState';
-import { createContext, useContext } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 interface IAuthContext {
-  signIn: (name: string) => void;
-  signOut: () => void;
-  session?: string | null;
-  isLoading: boolean;
+  user: IUser | null;
+  storeData: (user: IUser) => Promise<void>;
+  isLoading?: boolean;
 }
 
 export const AuthContext = createContext<IAuthContext>({
-  signIn: () => null,
-  signOut: () => null,
-  session: null,
-  isLoading: false,
+  user: null,
+  storeData: async () => {},
+  isLoading: true,
 });
 
 interface IAuthProviderProps {
   children: React.ReactNode;
 }
 
-// This hook can be used to access the user info.
+interface IUser {
+  name: string;
+}
 
 export function AuthProvider({ children }: IAuthProviderProps) {
-  const [[isLoading, session], setSession] = useStorageState('session');
+  const [user, setUser] = useState<IUser | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  function signIn(name: string) {
-    setSession(name);
+  async function getData() {
+    try {
+      setIsLoading(true);
+      const jsonValue = await AsyncStorage.getItem('userData');
+      setUser(jsonValue != null ? JSON.parse(jsonValue) : null);
+    } catch (error) {
+      console.log('error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   }
-  function signOut() {
-    setSession(null);
+
+  async function storeData(user: IUser) {
+    try {
+      setIsLoading(true);
+      const jsonValue = JSON.stringify(user);
+      await AsyncStorage.setItem('userData', jsonValue);
+      setUser(user);
+    } catch (error) {
+      console.log('error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   }
+
+  useEffect(() => {
+    void getData();
+  }, []);
 
   return (
     <AuthContext.Provider
       value={{
-        signIn,
-        signOut,
-        session,
+        user,
+        storeData,
         isLoading,
       }}
     >
