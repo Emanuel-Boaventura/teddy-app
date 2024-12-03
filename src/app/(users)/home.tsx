@@ -2,6 +2,7 @@ import { ClientBottomSheet } from '@/components/Clients/ClientBottomSheet';
 import { ClientCard } from '@/components/Clients/ClientCard';
 import { ItemsPerPageMenu } from '@/components/Clients/ItemsPerPageMenu';
 import { Loader } from '@/components/ui/Loader';
+import { MyText } from '@/components/ui/MyText';
 import { Pagination } from '@/components/ui/Pagination';
 import { usePagination } from '@/hooks/usePagination';
 import { getAllUsers, IClient } from '@/services/users/getAllUsers';
@@ -9,7 +10,7 @@ import { handleError } from '@/utils/handleError';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 import { useEffect, useRef, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 export default function Home() {
   const [clients, setClients] = useState<IClient[]>([]);
@@ -56,12 +57,14 @@ export default function Home() {
   return (
     <View style={s.view}>
       <View style={s.quantityView}>
-        <Text style={[s.large, s.bold]}>{clients.length}</Text>
-        <Text style={s.large}>clientes encontrados:</Text>
+        <MyText size={18} weight='700'>
+          {clients.length}
+        </MyText>
+        <MyText size={18}>clientes encontrados:</MyText>
       </View>
 
       <View style={s.perPageView}>
-        <Text style={s.large}>Clientes por página:</Text>
+        <MyText size={18}>Clientes por página:</MyText>
 
         <ItemsPerPageMenu value={limit} setValue={setLimit} />
       </View>
@@ -95,7 +98,9 @@ export default function Home() {
           ]}
           onPress={() => handleOpenSheet()}
         >
-          <Text style={s.createText}>Criar cliente</Text>
+          <MyText color='#EC6724' weight='700'>
+            Criar cliente
+          </MyText>
         </Pressable>
 
         <Pagination pagination={paginationControl} />
@@ -134,8 +139,6 @@ const s = StyleSheet.create({
     gap: 4,
     alignItems: 'flex-end',
   },
-  large: { fontSize: 18 },
-  bold: { fontFamily: '700' },
   footer: {
     width: '100%',
     padding: 20,
@@ -148,10 +151,5 @@ const s = StyleSheet.create({
     borderColor: '#EC6724',
     height: 40,
     borderWidth: 2,
-  },
-  createText: {
-    fontSize: 14,
-    fontFamily: '700',
-    color: '#EC6724',
   },
 });

@@ -25,16 +25,10 @@ import React, {
   useState,
 } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import {
-  Platform,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { Platform, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { Loader } from '../ui/Loader';
+import { MyText } from '../ui/MyText';
 
 type SheetProps = {
   userId: number | null;
@@ -148,13 +142,15 @@ export const ClientBottomSheet = forwardRef<BottomSheet, SheetProps>(
             <Loader />
           ) : (
             <BottomSheetView style={s.content}>
-              <Text style={s.title}>{userId ? 'Editar' : 'Criar'} Cliente</Text>
+              <MyText style={s.title}>
+                {userId ? 'Editar' : 'Criar'} Cliente
+              </MyText>
               <Controller
                 control={control}
                 name='name'
                 render={({ field }) => (
                   <View>
-                    <Text style={s.label}>Nome</Text>
+                    <MyText style={s.label}>Nome</MyText>
                     <TextInput
                       style={s.input}
                       placeholderTextColor='#bcbcbc'
@@ -173,7 +169,7 @@ export const ClientBottomSheet = forwardRef<BottomSheet, SheetProps>(
                 name='salary'
                 render={({ field }) => (
                   <View>
-                    <Text style={s.label}>Salário</Text>
+                    <MyText style={s.label}>Salário</MyText>
                     <TextInput
                       style={s.input}
                       placeholderTextColor='#bcbcbc'
@@ -193,7 +189,7 @@ export const ClientBottomSheet = forwardRef<BottomSheet, SheetProps>(
                 name='companyValuation'
                 render={({ field }) => (
                   <View>
-                    <Text style={s.label}>Valor da empresa</Text>
+                    <MyText style={s.label}>Valor da empresa</MyText>
                     <TextInput
                       style={s.input}
                       placeholderTextColor='#bcbcbc'
@@ -219,9 +215,9 @@ export const ClientBottomSheet = forwardRef<BottomSheet, SheetProps>(
                 disabled={disabled}
                 onPress={handleSubmit(onSubmit)}
               >
-                <Text style={[s.buttonText, disabled && s.buttonDisabled]}>
+                <MyText style={[s.buttonText, disabled && s.buttonDisabled]}>
                   {userId ? 'Editar' : 'Criar'} Cliente
-                </Text>
+                </MyText>
               </Pressable>
 
               <Animated.View style={{ height: isIos ? height : 0 }} />

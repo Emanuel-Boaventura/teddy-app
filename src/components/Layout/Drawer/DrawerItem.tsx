@@ -1,4 +1,5 @@
-import { Text, View } from 'react-native';
+import { MyText } from '@/components/ui/MyText';
+import { View } from 'react-native';
 
 type MyDrawerItemProps = {
   color: string;
@@ -16,9 +17,9 @@ export function MyDrawerItem({ color, focused, title }: MyDrawerItemProps) {
         marginLeft: focused ? -2 : 0,
       }}
     >
-      <Text style={{ color: color, fontFamily: 'Inter_600SemiBold' }}>
+      <MyText color={color} weight='600'>
         {title}
-      </Text>
+      </MyText>
     </View>
   );
 }

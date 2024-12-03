@@ -1,7 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { Pressable, Text } from 'react-native';
+import { Pressable } from 'react-native';
 import { Menu } from 'react-native-paper';
+import { MyText } from '../ui/MyText';
 
 interface IItemsPerPageMenu {
   value: number;
@@ -39,7 +40,7 @@ export function ItemsPerPageMenu({ value, setValue }: IItemsPerPageMenu) {
           })}
           onPress={toggleDialog}
         >
-          <Text style={{ fontSize: 12 }}>{value}</Text>
+          <MyText size={12}>{value}</MyText>
 
           <Ionicons
             name='chevron-down'

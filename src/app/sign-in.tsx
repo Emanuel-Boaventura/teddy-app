@@ -1,8 +1,9 @@
+import { MyText } from '@/components/ui/MyText';
 import { useSession } from '@/Contexts/AuthContext';
 import { handleError } from '@/utils/handleError';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 
 export default function SignIn() {
   const [name, setName] = useState('');
@@ -25,7 +26,7 @@ export default function SignIn() {
 
   return (
     <View style={s.view}>
-      <Text style={s.title}>Olá, seja bem vindo!</Text>
+      <MyText size={32}>Olá, seja bem vindo!</MyText>
 
       <TextInput
         style={s.input}
@@ -44,7 +45,9 @@ export default function SignIn() {
         ]}
         onPress={signIn}
       >
-        <Text style={s.buttonText}>Entrar</Text>
+        <MyText size={24} color='#fff' weight='700'>
+          Entrar
+        </MyText>
       </Pressable>
     </View>
   );
@@ -67,9 +70,6 @@ const s = StyleSheet.create({
     borderColor: '#D9D9D9',
     width: '100%',
   },
-  title: {
-    fontSize: 32,
-  },
   button: {
     padding: 10,
     borderRadius: 5,
@@ -77,10 +77,5 @@ const s = StyleSheet.create({
     height: 60,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
   },
 });

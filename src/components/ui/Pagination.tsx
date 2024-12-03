@@ -1,5 +1,6 @@
 import { PaginationReturn } from '@/hooks/usePagination';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { MyText } from './MyText';
 
 export function Pagination({ pagination }: { pagination: PaginationReturn }) {
   return (
@@ -19,9 +20,9 @@ export function Pagination({ pagination }: { pagination: PaginationReturn }) {
             ]}
             onPress={() => item !== 'dots' && pagination.setPage(item)}
           >
-            <Text style={[s.text, isActive && s.active]}>
+            <MyText style={[s.text, isActive && s.active]}>
               {item === 'dots' ? '...' : item}
-            </Text>
+            </MyText>
           </Pressable>
         );
       })}
