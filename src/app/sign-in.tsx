@@ -1,4 +1,5 @@
 import { useSession } from '@/Contexts/AuthContext';
+import { handleError } from '@/utils/handleError';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
@@ -18,7 +19,7 @@ export default function SignIn() {
 
       router.navigate({ pathname: '/home' });
     } catch (error) {
-      console.log('error:', error);
+      handleError(error);
     }
   }
 

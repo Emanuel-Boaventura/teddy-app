@@ -1,3 +1,4 @@
+import { handleError } from '@/utils/handleError';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, useContext, useEffect, useState } from 'react';
 
@@ -31,7 +32,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
       const jsonValue = await AsyncStorage.getItem('userData');
       setUser(jsonValue != null ? JSON.parse(jsonValue) : null);
     } catch (error) {
-      console.log('error:', error);
+      handleError(error);
     } finally {
       setIsLoading(false);
     }
@@ -44,7 +45,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
       await AsyncStorage.setItem('userData', jsonValue);
       setUser(user);
     } catch (error) {
-      console.log('error:', error);
+      handleError(error);
     } finally {
       setIsLoading(false);
     }

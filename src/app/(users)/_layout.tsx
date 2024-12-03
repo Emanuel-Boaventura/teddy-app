@@ -1,12 +1,12 @@
 import { MyDrawerItem } from '@/components/Layout/Drawer/DrawerItem';
 import { MyDrawer } from '@/components/Layout/Drawer/MyDrawer';
 import { Header } from '@/components/Layout/Header';
+import { Loader } from '@/components/ui/Loader';
 import { useSession } from '@/Contexts/AuthContext';
 import { ClientsProvider } from '@/Contexts/ClientsContext';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
-import { ActivityIndicator } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export const unstable_settings = {
@@ -18,7 +18,7 @@ export default function ClientsLayout() {
 
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading) {
-    return <ActivityIndicator color='#EC6724' size='large' />;
+    return <Loader />;
   }
 
   if (!user) {

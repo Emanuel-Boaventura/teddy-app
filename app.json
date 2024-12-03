@@ -8,6 +8,9 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "extra": {
+      "API_URL": "https://boasorte.teddybackoffice.com.br/"
+    },
     "ios": {
       "supportsTablet": true
     },

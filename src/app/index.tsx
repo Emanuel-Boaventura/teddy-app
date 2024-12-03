@@ -1,4 +1,4 @@
-import { useSession } from '@/Contexts/AuthContext';
+import { Loader } from '@/components/ui/Loader';
 import {
   Inter_100Thin,
   Inter_200ExtraLight,
@@ -13,7 +13,7 @@ import {
 } from '@expo-google-fonts/inter';
 import { router } from 'expo-router';
 import { useEffect } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { View } from 'react-native';
 
 export default function Index() {
   let [fontsLoaded] = useFonts({
@@ -34,7 +34,7 @@ export default function Index() {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <ActivityIndicator color='#EC6724' size='large' />
+      <Loader />
     </View>
   );
 }

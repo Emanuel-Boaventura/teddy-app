@@ -1,3 +1,5 @@
+import { IClient } from '@/services/users/getAllUsers';
+import { handleError } from '@/utils/handleError';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   createContext,
@@ -12,23 +14,17 @@ interface IClientsProviderProps {
   children: ReactNode;
 }
 
-export interface IClients {
-  name: string;
-  salary: number;
-  companyValuation: number;
-}
-
 interface IClientsContext {
-  clients: IClients[];
-  setClients: Dispatch<SetStateAction<IClients[]>>;
-  storeData: (newList: IClients[]) => Promise<void>;
+  clients: IClient[];
+  setClients: Dispatch<SetStateAction<IClient[]>>;
+  storeData: (newList: IClient[]) => Promise<void>;
   getData: () => Promise<void>;
 }
 
 export const ClientsContext = createContext({} as IClientsContext);
 
 export function ClientsProvider({ children }: IClientsProviderProps) {
-  const [selectedClients, setSelectedClients] = useState<IClients[]>([]);
+  const [selectedClients, setSelectedClients] = useState<IClient[]>([]);
 
   const getData = async () => {
     try {
@@ -38,15 +34,15 @@ export function ClientsProvider({ children }: IClientsProviderProps) {
         console.log('value', value);
       }
     } catch (error) {
-      console.log('error:', error);
+      handleError(error);
     }
   };
 
-  const storeData = async (newList: IClients[]) => {
+  const storeData = async (newList: IClient[]) => {
     try {
       await AsyncStorage.setItem('users', JSON.stringify(newList));
     } catch (error) {
-      console.log('error:', error);
+      handleError(error);
     }
   };
 

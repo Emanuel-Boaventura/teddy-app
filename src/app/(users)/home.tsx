@@ -1,43 +1,26 @@
 import { AddClientBottomSheet } from '@/components/Clients/AddClientBottomSheet';
 import { ClientCard } from '@/components/Clients/ClientCard';
 import { ItemsPerPageMenu } from '@/components/Clients/ItemsPerPageMenu';
+import { Loader } from '@/components/ui/Loader';
 import { Pagination } from '@/components/ui/Pagination';
-import { IClients } from '@/Contexts/ClientsContext';
 import { usePagination } from '@/hooks/usePagination';
+import { getAllUsers, IClient } from '@/services/users/getAllUsers';
+import { handleError } from '@/utils/handleError';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 export default function Home() {
-  const [clients, setClients] = useState<IClients[]>([
-    {
-      name: 'Eduardo',
-      salary: 350000,
-      companyValuation: 12000000,
-    },
-    {
-      name: 'Marcos',
-      salary: 350000,
-      companyValuation: 12000000,
-    },
-    {
-      name: 'Emanuel',
-      salary: 350000,
-      companyValuation: 12000000,
-    },
-    {
-      name: 'Artur',
-      salary: 350000,
-      companyValuation: 12000000,
-    },
-  ]);
-  const [itemsPerPage, setItemsPerPage] = useState(16);
+  const [clients, setClients] = useState<IClient[]>([]);
+  const [limit, setLimit] = useState(16);
+  const [total, setTotal] = useState(1);
   const [page, onChange] = useState(1);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const constTotalPages = Math.ceil(clients.length / itemsPerPage);
-  const pagination = usePagination({
-    total: constTotalPages,
+  const paginationControl = usePagination({
+    total,
     page,
     onChange,
     initialPage: 1,
@@ -46,13 +29,29 @@ export default function Home() {
 
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  function handleCloseSheet() {
-    bottomSheetRef.current?.close();
-  }
-
-  function handleOpenSheet() {
+  function handleOpenSheet(id?: number) {
+    if (id) setSelectedId(id);
     bottomSheetRef.current?.expand();
   }
+
+  async function getData() {
+    try {
+      setIsLoading(true);
+
+      const data = await getAllUsers({ limit: limit, page });
+
+      setTotal(data.totalPages);
+      setClients(data.clients);
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    void getData();
+  }, [limit, page]);
 
   return (
     <View style={s.view}>
@@ -64,15 +63,26 @@ export default function Home() {
       <View style={s.perPageView}>
         <Text style={s.large}>Clientes por página:</Text>
 
-        <ItemsPerPageMenu value={itemsPerPage} setValue={setItemsPerPage} />
+        <ItemsPerPageMenu value={limit} setValue={setLimit} />
       </View>
 
       <View style={s.listWrapper}>
-        <FlashList
-          data={clients}
-          renderItem={({ item }) => <ClientCard client={item} />}
-          estimatedItemSize={100}
-        />
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <FlashList
+            data={clients}
+            renderItem={({ item }) => (
+              <ClientCard
+                client={item}
+                handleEdit={handleOpenSheet}
+                setIsLoading={setIsLoading}
+                refreshData={getData}
+              />
+            )}
+            estimatedItemSize={100}
+          />
+        )}
       </View>
 
       <View style={s.footer}>
@@ -83,15 +93,20 @@ export default function Home() {
               backgroundColor: pressed ? '#fdf0e9' : 'transparent',
             },
           ]}
-          onPress={handleOpenSheet}
+          onPress={() => handleOpenSheet()}
         >
           <Text style={s.createText}>Criar cliente</Text>
         </Pressable>
 
-        <Pagination pagination={pagination} />
+        <Pagination pagination={paginationControl} />
       </View>
 
-      <AddClientBottomSheet ref={bottomSheetRef} />
+      <AddClientBottomSheet
+        ref={bottomSheetRef}
+        userId={selectedId}
+        setUserId={setSelectedId}
+        refreshData={getData}
+      />
     </View>
   );
 }
