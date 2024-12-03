@@ -1,16 +1,19 @@
+import { useClients } from '@/Contexts/ClientsContext';
 import { deleteUser } from '@/services/users/deleteUser';
 import { IClient } from '@/services/users/getAllUsers';
 import { currencyFormatter } from '@/utils/formatters';
 import { handleError } from '@/utils/handleError';
 import { Octicons } from '@expo/vector-icons';
 import { Dispatch, SetStateAction } from 'react';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, View } from 'react-native';
+import { MyText } from '../ui/MyText';
 
 interface IClientCard {
   client: IClient;
-  handleEdit: (id: number) => void;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
-  refreshData: () => Promise<void>;
+  handleEdit?: (id: number) => void;
+  refreshData?: () => Promise<void>;
+  isEditEnabled?: boolean;
 }
 
 export function ClientCard({
@@ -18,20 +21,35 @@ export function ClientCard({
   handleEdit,
   refreshData,
   setIsLoading,
+  isEditEnabled = true,
 }: IClientCard) {
-  function handleSelectClient() {
-    console.log('Selected client:', client);
+  const { removeClient, selectClient, selectedClients } = useClients();
+
+  const isSelected = selectedClients.some(({ id }) => id === client.id);
+
+  async function handleSaveOrRemoveClient() {
+    try {
+      if (isSelected) {
+        await removeClient(client.id);
+      } else {
+        await selectClient(client);
+      }
+    } catch (error) {
+      handleError(error);
+    }
   }
 
   function handleEditClient() {
-    handleEdit(client.id);
+    if (handleEdit) handleEdit(client.id);
   }
 
   async function handleDelete(id: number) {
     try {
       setIsLoading(true);
+
       await deleteUser(id);
-      refreshData();
+
+      if (refreshData) refreshData();
     } catch (error) {
       handleError(error);
     } finally {
@@ -58,24 +76,39 @@ export function ClientCard({
   }
   return (
     <View style={s.card}>
-      <Text style={s.bold}>{client.name}</Text>
+      <MyText size={16} weight='700'>
+        {client.name}
+      </MyText>
 
-      <Text style={s.small}>Salário: {currencyFormatter(client.salary)}</Text>
+      <MyText>Salário: {currencyFormatter(client.salary)}</MyText>
 
-      <Text style={s.small}>
-        Empresa: {currencyFormatter(client.companyValuation)}
-      </Text>
+      <MyText>Empresa: {currencyFormatter(client.companyValuation)}</MyText>
 
-      <View style={s.buttons}>
-        <Pressable onPress={handleSelectClient} style={s.handleButton}>
-          <Octicons name='plus' size={20} />
+      <View
+        style={[
+          s.buttons,
+          { justifyContent: isEditEnabled ? 'space-between' : 'flex-end' },
+        ]}
+      >
+        <Pressable onPress={handleSaveOrRemoveClient} style={s.button}>
+          <Octicons
+            name={isSelected ? 'dash' : 'plus'}
+            color={isSelected ? '#F00' : '#000'}
+            size={20}
+          />
         </Pressable>
-        <Pressable onPress={handleEditClient} style={s.handleButton}>
-          <Octicons name='pencil' size={20} />
-        </Pressable>
-        <Pressable onPress={openDeleteAlert} style={s.handleButton}>
-          <Octicons name='trash' size={20} color='#F00' />
-        </Pressable>
+
+        {isEditEnabled && (
+          <>
+            <Pressable onPress={handleEditClient} style={s.button}>
+              <Octicons name='pencil' size={20} />
+            </Pressable>
+
+            <Pressable onPress={openDeleteAlert} style={s.button}>
+              <Octicons name='trash' size={20} color='#F00' />
+            </Pressable>
+          </>
+        )}
       </View>
     </View>
   );
@@ -83,6 +116,7 @@ export function ClientCard({
 
 const s = StyleSheet.create({
   card: {
+    flex: 1,
     backgroundColor: '#fff',
     padding: 12,
     paddingTop: 16,
@@ -91,14 +125,13 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: 10,
     marginHorizontal: 20,
-    flex: 1,
     shadowColor: 'rgba(0, 0, 0, 0.25)',
     shadowOffset: { width: 0, height: 1 },
     shadowRadius: 2,
     elevation: 5,
     gap: 6,
   },
-  handleButton: {
+  button: {
     height: 24,
     width: 24,
     justifyContent: 'center',
@@ -106,10 +139,7 @@ const s = StyleSheet.create({
   },
   buttons: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     width: '100%',
     marginTop: 6,
   },
-  small: { fontSize: 14 },
-  bold: { fontWeight: 'bold' },
 });
