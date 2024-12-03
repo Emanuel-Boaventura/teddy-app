@@ -16,7 +16,6 @@ export const unstable_settings = {
 export default function ClientsLayout() {
   const { user, isLoading } = useSession();
 
-  // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading) {
     return <Loader />;
   }
@@ -51,10 +50,11 @@ export default function ClientsLayout() {
               borderBottomRightRadius: 0,
             },
           }}
+          initialRouteName='clients'
           drawerContent={MyDrawer}
         >
           <Drawer.Screen
-            name='home'
+            name='sign-in'
             options={{
               drawerLabel: ({ color, focused }) => (
                 <MyDrawerItem color={color} focused={focused} title='Home' />
@@ -67,17 +67,14 @@ export default function ClientsLayout() {
                   style={{ marginLeft: focused ? -4 : 0 }}
                 />
               ),
+              headerShown: false,
             }}
           />
           <Drawer.Screen
-            name='selected-clients'
+            name='clients'
             options={{
               drawerLabel: ({ color, focused }) => (
-                <MyDrawerItem
-                  color={color}
-                  focused={focused}
-                  title='Clientes Selecionados'
-                />
+                <MyDrawerItem color={color} focused={focused} title='Clients' />
               ),
               drawerIcon: ({ color, focused }) => (
                 <Ionicons
@@ -90,7 +87,7 @@ export default function ClientsLayout() {
             }}
           />
           <Drawer.Screen
-            name='products'
+            name='selected-clients'
             options={{
               drawerLabel: ({ color, focused }) => (
                 <MyDrawerItem

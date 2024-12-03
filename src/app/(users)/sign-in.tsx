@@ -18,7 +18,7 @@ export default function SignIn() {
     try {
       storeData({ name });
 
-      router.navigate({ pathname: '/home' });
+      router.navigate({ pathname: '/clients' });
     } catch (error) {
       handleError(error);
     }
