@@ -10,11 +10,11 @@ export function ClientCard({ client }: { client: IClients }) {
       <Text style={s.bold}>{client.name}</Text>
 
       <Text style={s.small}>
-        Salário: R${currencyMask(client.salary.toString())}
+        Salário: {currencyMask(client.salary.toString())}
       </Text>
 
       <Text style={s.small}>
-        Empresa: R${currencyMask(client.companyValuation.toString())}
+        Empresa: {currencyMask(client.companyValuation.toString())}
       </Text>
 
       <View style={s.buttons}>

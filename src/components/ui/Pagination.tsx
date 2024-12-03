@@ -9,6 +9,7 @@ export function Pagination({ pagination }: { pagination: PaginationReturn }) {
 
         return (
           <Pressable
+            key={item}
             style={({ pressed }) => [
               {
                 backgroundColor: pressed ? '#fdf0e9' : 'transparent',

@@ -1,80 +1,50 @@
 import { useSession } from '@/Contexts/AuthContext';
-import { StyleSheet, Text, View } from 'react-native';
+
+import BottomSheet, { BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import React, { useMemo, useRef } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 export default function SelectedClients() {
-  const { signOut } = useSession();
+  const snapPoints = useMemo(() => ['25%'], []);
 
-  const DATA = [
-    {
-      title: 'First Item',
-    },
-    {
-      title: 'Second Item',
-    },
-  ];
+  const ref = useRef<BottomSheet>(null);
 
   return (
-    <View style={s.view}>
-      <Text style={s.title}>Selected Clients!</Text>
-
-      <View style={s.listWrapper}>
-        {/* <FlashList
-          data={DATA}
-          renderItem={({ item }) => (
-            <Text
-              style={{
-                height: 30,
-                width: '100%',
-                backgroundColor: '#ffadcb',
-              }}
-            >
-              {item.title}
-            </Text>
-          )}
-          estimatedItemSize={200}
-        /> */}
-      </View>
+    <View style={styles.container}>
+      <Pressable
+        onPress={() => {
+          ref.current?.expand();
+        }}
+      >
+        <Text>Open</Text>
+      </Pressable>
+      <BottomSheet ref={ref} snapPoints={snapPoints}>
+        <View style={styles.contentContainer}>
+          <BottomSheetTextInput value='Awesome 🎉' style={styles.textInput} />
+        </View>
+      </BottomSheet>
     </View>
   );
 }
 
-const s = StyleSheet.create({
-  view: {
+const styles = StyleSheet.create({
+  container: {
     flex: 1,
-    gap: 20,
-    padding: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#8590f5',
+    padding: 24,
+    backgroundColor: 'grey',
   },
-  listWrapper: {
+  textInput: {
+    alignSelf: 'stretch',
+    marginHorizontal: 12,
+    marginBottom: 12,
+    padding: 12,
+    borderRadius: 12,
+    backgroundColor: 'grey',
+    color: 'white',
+    textAlign: 'center',
+  },
+  contentContainer: {
     flex: 1,
-    width: '100%',
-    backgroundColor: '#b9ffaf',
-  },
-  input: {
-    fontSize: 24,
-    padding: 16,
-    paddingLeft: 20,
-    borderWidth: 2,
-    borderRadius: 4,
-    borderColor: '#D9D9D9',
-    width: '100%',
-  },
-  title: {
-    fontSize: 32,
-  },
-  button: {
-    padding: 10,
-    borderRadius: 5,
-    width: '100%',
-    height: 60,
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
   },
 });

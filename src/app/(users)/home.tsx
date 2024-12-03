@@ -1,10 +1,12 @@
+import { AddClientBottomSheet } from '@/components/Clients/AddClientBottomSheet';
 import { ClientCard } from '@/components/Clients/ClientCard';
 import { ItemsPerPageMenu } from '@/components/Clients/ItemsPerPageMenu';
 import { Pagination } from '@/components/ui/Pagination';
 import { IClients } from '@/Contexts/ClientsContext';
 import { usePagination } from '@/hooks/usePagination';
+import BottomSheet from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 export default function Home() {
@@ -30,7 +32,7 @@ export default function Home() {
       companyValuation: 12000000,
     },
   ]);
-  const [itemsPerPage, setItemsPerPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(16);
   const [page, onChange] = useState(1);
 
   const constTotalPages = Math.ceil(clients.length / itemsPerPage);
@@ -42,8 +44,14 @@ export default function Home() {
     siblings: 1,
   });
 
-  function handleCreateClient() {
-    console.log('create');
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  function handleCloseSheet() {
+    bottomSheetRef.current?.close();
+  }
+
+  function handleOpenSheet() {
+    bottomSheetRef.current?.expand();
   }
 
   return (
@@ -75,13 +83,15 @@ export default function Home() {
               backgroundColor: pressed ? '#fdf0e9' : 'transparent',
             },
           ]}
-          onPress={handleCreateClient}
+          onPress={handleOpenSheet}
         >
           <Text style={s.createText}>Criar cliente</Text>
         </Pressable>
 
         <Pagination pagination={pagination} />
       </View>
+
+      <AddClientBottomSheet ref={bottomSheetRef} />
     </View>
   );
 }
