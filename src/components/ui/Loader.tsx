@@ -1,4 +1,4 @@
-import { ActivityIndicator } from 'react-native-paper';
+import { ActivityIndicator } from 'react-native';
 
 interface ILoader {
   size?: number;
@@ -9,6 +9,7 @@ interface ILoader {
 export function Loader({ size = 48, color = '#EB6625', shrink }: ILoader) {
   return (
     <ActivityIndicator
+      testID='loader'
       size={size}
       color={color}
       style={shrink ? {} : { flex: 1 }}

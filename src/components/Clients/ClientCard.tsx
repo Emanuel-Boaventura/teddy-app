@@ -25,7 +25,7 @@ export function ClientCard({
 }: IClientCard) {
   const { removeClient, selectClient, selectedClients } = useClients();
 
-  const isSelected = selectedClients.some(({ id }) => id === client.id);
+  const isSelected = selectedClients?.some(({ id }) => id === client.id);
 
   async function handleSaveOrRemoveClient() {
     try {
