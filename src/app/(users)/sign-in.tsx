@@ -11,6 +11,7 @@ interface IUser {
 
 export default function SignIn() {
   const [name, setName] = useState('');
+  const [error, setError] = useState(false);
 
   async function getUserName() {
     try {
@@ -27,6 +28,9 @@ export default function SignIn() {
   }
 
   async function signIn() {
+    if (!name) return setError(true);
+    setError(false);
+
     try {
       const userData = JSON.stringify({ name });
 
@@ -54,6 +58,7 @@ export default function SignIn() {
         onChangeText={setName}
         onSubmitEditing={signIn}
       />
+      {error && <MyText color='red'>Digite o seu nome para continuar.</MyText>}
 
       <Pressable
         style={({ pressed }) => [
