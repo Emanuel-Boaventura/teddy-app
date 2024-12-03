@@ -10,3 +10,9 @@ Depois inicie o projeto com:
 
 Se for utilizar o ExpoGo sinta-se livre para escanear o QR code que aparecer no terminal e testar o app
 Caso prefira abrir em algum emulador depois de inicializar o servidor pode pressionar `i` ou `a` para carregar o aplicativo no Android ou iOS.
+
+## Testes
+
+Caso queira rodas os testes unitarios e ver se estão passando apenas digite no terminal:
+
+`npm run test`
