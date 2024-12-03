@@ -9,10 +9,6 @@ import { router } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-export const unstable_settings = {
-  initialRouteName: 'home',
-};
-
 export default function ClientsLayout() {
   const { user, isLoading } = useSession();
 

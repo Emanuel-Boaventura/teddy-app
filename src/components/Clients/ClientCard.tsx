@@ -47,6 +47,10 @@ export function ClientCard({
     try {
       setIsLoading(true);
 
+      if (isSelected) {
+        await removeClient(id);
+      }
+
       await deleteUser(id);
 
       if (refreshData) refreshData();
